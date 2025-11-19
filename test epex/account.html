@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account</title>
+  <script
+    type="module"
+    src="https://widgets.prod.cleeng.com/cleeng.js">
+  </script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+    [data-cleeng-widget] {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .back-link {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 10;
+      font-size: 1rem;
+    }
+    /* Logout button styling */
+    #logoutBtn {
+      position: absolute;
+      top: 10px;
+      left: 120px; /* next to back link */
+      z-index: 10;
+      font-size: 1rem;
+      color: blue;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-link">← Back to Home</a>
+
+  <!-- Logout button appended -->
+  <button id="logoutBtn">Logout</button>
+
+  <div
+    data-cleeng-offer-id="S189299398_US"
+    data-cleeng-publisher-id="599950200"
+    data-cleeng-widget="account"
+  ></div>
+
+  <!-- Logout script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const logoutBtn = document.getElementById("logoutBtn");
+
+      logoutBtn?.addEventListener("click", async () => {
+        try {
+          // Logout via Cleeng Hosted Auth
+          if (window.CleengAuth && window.CleengAuth.logout) {
+            await window.CleengAuth.logout();
+          }
+
+          // Optional: clear any stored tokens
+          localStorage.removeItem("cleeng.authToken");
+          sessionStorage.removeItem("cleeng.authToken");
+
+          // Redirect to Hosted logout URL to fully clear widget session
+          window.location.href = "https://widgets.prod.cleeng.com/logout?redirect_uri=auth.html";
+
+        } catch (error) {
+          console.error("Logout failed:", error);
+          alert("Logout failed, check console");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
